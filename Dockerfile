@@ -32,8 +32,8 @@ COPY . .
 # Certifique-se de que o diretório storage existe e ajuste as permissões
 RUN mkdir -p /var/www/storage && chown -R www-data:www-data /var/www && chmod -R 755 /var/www/storage
 
-# Exponha a porta 80 para Nginx
-EXPOSE 80
+# Exponha a porta 8081 para Nginx
+EXPOSE 8081 
 
 # Start supervisord para gerenciar PHP-FPM e Nginx
 COPY ./supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
