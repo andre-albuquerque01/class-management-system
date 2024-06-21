@@ -33,7 +33,7 @@ COPY . .
 RUN mkdir -p /var/www/storage && chown -R www-data:www-data /var/www && chmod -R 755 /var/www/storage
 
 # Exponha a porta 8081 para Nginx
-EXPOSE 8081 
+EXPOSE 8080
 
 # Start supervisord para gerenciar PHP-FPM e Nginx
 COPY ./supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
