@@ -1,34 +1,39 @@
-# Usar a imagem base oficial do PHP com FPM e Nginx
-FROM php:8.1-fpm
+# Use imagem oficial do PHP com suporte ao FPM
+FROM php:8.0-fpm
 
-# Instalar as extensões necessárias
+# Instale dependências necessárias
 RUN apt-get update && apt-get install -y \
-    libfreetype6-dev \
-    libjpeg62-turbo-dev \
+    build-essential \
     libpng-dev \
+    libjpeg62-turbo-dev \
+    libfreetype6-dev \
     libonig-dev \
-    libxml2-dev \
+    locales \
     zip \
+    jpegoptim optipng pngquant gifsicle \
+    vim \
     unzip \
+    git \
+    curl \
+    supervisor \
     nginx \
-    && docker-php-ext-install -j$(nproc) iconv \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install -j$(nproc) gd \
-    && docker-php-ext-install pdo pdo_mysql \
-    && docker-php-ext-install ctype curl dom fileinfo filter hash mbstring openssl pcre xml tokenizer session \
-    && apt-get clean
+    libcurl4-openssl-dev  # Adicione libcurl
 
-# Copiar o arquivo de configuração do Nginx
-COPY nginx.conf /etc/nginx/sites-available/default
+# Instale extensões PHP
+RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd curl
 
-# Configurar o diretório de trabalho
-WORKDIR /srv/example.com
+# Configuração do Nginx
+COPY ./nginx/default.conf /etc/nginx/sites-available/default
 
-# Copiar o código do projeto para o diretório de trabalho
-COPY Api/ /srv/example.com
+# Copie o projeto
+WORKDIR /var/www
+COPY . .
+RUN chown -R www-data:www-data /var/www && chmod -R 755 /var/www/storage
 
-# Expor a porta 80
+# Exponha a porta 80 para Nginx
 EXPOSE 80
 
-# Comando para iniciar o PHP-FPM e o Nginx
-CMD service php8.1-fpm start && nginx -g 'daemon off;'
+# Start supervisord para gerenciar PHP-FPM e Nginx
+COPY ./supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+ENTRYPOINT ["supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
