@@ -17,7 +17,7 @@ RUN apt-get update && apt-get install -y \
     curl \
     supervisor \
     nginx \
-    libcurl4-openssl-dev  # Adicione libcurl
+    libcurl4-openssl-dev
 
 # Instale extensões PHP
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd curl
