@@ -37,4 +37,7 @@ EXPOSE 8080
 # Start supervisord para gerenciar PHP-FPM e Nginx
 COPY ./supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
+# Verifique se o socket do PHP-FPM é criado
+RUN touch /var/run/php/php8.0-fpm.sock && chown www-data:www-data /var/run/php/php8.0-fpm.sock
+
 ENTRYPOINT ["supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
