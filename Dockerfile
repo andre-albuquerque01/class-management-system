@@ -1,4 +1,3 @@
-# Use imagem oficial do PHP com suporte ao FPM
 FROM php:8.0-fpm
 
 # Instale dependências necessárias
@@ -27,12 +26,12 @@ COPY ./nginx/default.conf /etc/nginx/sites-available/default
 
 # Copie o projeto
 WORKDIR /var/www
-COPY . .
+COPY ./Api .
 
 # Certifique-se de que o diretório storage existe e ajuste as permissões
 RUN mkdir -p /var/www/storage && chown -R www-data:www-data /var/www && chmod -R 755 /var/www/storage
 
-# Exponha a porta 8081 para Nginx
+# Exponha a porta 8080 para Nginx
 EXPOSE 8080
 
 # Start supervisord para gerenciar PHP-FPM e Nginx
