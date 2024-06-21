@@ -21,6 +21,9 @@ RUN apt-get update && apt-get install -y \
 # Instale extensões PHP
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd curl
 
+# Verifique a localização do PHP-FPM
+RUN which php-fpm
+
 # Configuração do Nginx
 COPY ./nginx/default.conf /etc/nginx/sites-available/default
 
