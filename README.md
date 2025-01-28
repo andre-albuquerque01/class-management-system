@@ -99,8 +99,8 @@ Abra o navegador e acesse `http://localhost:3000` para utilizar o serviço.
 
 - Início
 
-<img src="mold/imgSystem/index.png" alt="Index" />
+<img src="assets/index.png" alt="Index" />
 
 - Dashboard
 
-<img src="mold/imgSystem/dashboard.png" alt="Dashboard" />
+<img src="assets/dashboard.png" alt="Dashboard" />
